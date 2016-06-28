@@ -1,0 +1,16 @@
+#!/bin/bash
+# echo $@
+old=$2
+new=$1
+
+dir=$(mktemp -d)
+
+f_old=$(basename $old)
+f_new=$(basename $new)
+
+xmllint --c14n $old > $dir/$f_old
+xmllint --c14n $new > $dir/$f_new
+
+git diff --no-index $dir/$f_old $dir/$f_new
+
+rm -rf $dir
